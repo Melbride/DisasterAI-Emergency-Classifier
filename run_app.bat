@@ -1,0 +1,9 @@
+@echo off
+echo Starting DisasterAI Application...
+echo.
+echo Installing dependencies...
+pip install -r requirements.txt
+echo.
+echo Launching application...
+streamlit run disaster.py --server.port 8501 --server.address localhost
+pause
