@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DisasterAI - Emergency Response Classifier</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-shield-alt"></i>
+                <span>DisasterAI</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#home" class="nav-link active" data-page="home">Home</a>
+                <a href="#classify" class="nav-link" data-page="classify">Classify</a>
+                <a href="#analytics" class="nav-link" data-page="analytics">Analytics</a>
+                <a href="#about" class="nav-link" data-page="about">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <!-- Home Page -->
+        <section id="home" class="page-section active">
+            <div class="hero">
+                <div class="hero-background">
+                    <div class="hero-overlay"></div>
+                </div>
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h1 class="hero-title">
+                            <span class="gradient-text">AI-Powered</span><br>
+                            Emergency Response
+                        </h1>
+                        <p class="hero-subtitle">
+                            Revolutionizing disaster response with intelligent message classification and real-time priority management
+                        </p>
+                        <div class="hero-buttons">
+                            <button class="btn btn-primary" onclick="showPage('classify')">
+                                <i class="fas fa-rocket"></i>
+                                Start Classifying
+                            </button>
+                            <button class="btn btn-secondary" onclick="showDemo()">
+                                <i class="fas fa-play"></i>
+                                Watch Demo
+                            </button>
+                        </div>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat-card">
+                            <div class="stat-number">94%</div>
+                            <div class="stat-label">Accuracy</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">10K+</div>
+                            <div class="stat-label">Messages/Min</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">75%</div>
+                            <div class="stat-label">Faster Response</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Features Section -->
+            <section class="features">
+                <div class="container">
+                    <h2 class="section-title">Powerful Features</h2>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <h3>AI Classification</h3>
+                            <p>Advanced machine learning models trained on disaster response data for accurate categorization</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            <h3>Real-time Processing</h3>
+                            <p>Instant message analysis with sub-second response times for critical emergency situations</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h3>Analytics Dashboard</h3>
+                            <p>Comprehensive insights and trends to optimize emergency response strategies</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <h3>Priority Management</h3>
+                            <p>Automatic identification and escalation of high-priority emergency situations</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Classification Page -->
+        <section id="classify" class="page-section">
+            <div class="container">
+                <h2 class="section-title">Message Classification</h2>
+                <div class="classify-container">
+                    <div class="classify-input">
+                        <div class="input-header">
+                            <h3>Enter Emergency Message</h3>
+                            <div class="input-controls">
+                                <label class="threshold-label">
+                                    🎯 Confidence Threshold: <span id="threshold-value">0.5</span>
+                                    <span class="threshold-help">ℹ️ Lower = more categories, Higher = more certain</span>
+                                </label>
+                                <input type="range" id="threshold-slider" min="0.1" max="0.9" step="0.1" value="0.5">
+                            </div>
+                        </div>
+                        <div class="message-input-container">
+                            <textarea id="message-input" placeholder="Type your disaster-related message here..." rows="6"></textarea>
+                            <div class="input-actions">
+                                <button class="btn btn-primary" onclick="classifyMessage()">
+                                    <i class="fas fa-search"></i>
+                                    Classify Message
+                                </button>
+                                <button class="btn btn-secondary" onclick="clearInput()">
+                                    <i class="fas fa-trash"></i>
+                                    Clear
+                                </button>
+                            </div>
+                        </div>
+                        <div class="example-messages">
+                            <h4>Try Example Messages:</h4>
+                            <div class="example-buttons">
+                                <button class="example-btn" onclick="setExample('We need immediate medical assistance, several people are injured and bleeding')">Medical Emergency</button>
+                                <button class="example-btn" onclick="setExample('Running out of clean drinking water, please send supplies urgently')">Water Crisis</button>
+                                <button class="example-btn" onclick="setExample('Shelter collapsed, families need temporary housing and warm clothes')">Shelter Need</button>
+                                <button class="example-btn" onclick="setExample('Food supplies exhausted, children are hungry, need emergency food delivery')">Food Emergency</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="classify-results" id="results-container" style="display: none;">
+                        <div class="results-header">
+                            <h3>Classification Results</h3>
+                            <div class="results-summary" id="results-summary"></div>
+                        </div>
+                        
+                        <!-- Priority Legend -->
+                        <div class="priority-legend">
+                            <h4>🎯 Priority Levels Explained:</h4>
+                            <div class="legend-items">
+                                <div class="legend-item">
+                                    <div class="legend-color high"></div>
+                                    <span>🔴 <strong>High Priority:</strong> Life-threatening (Medical, Water, Food, Search & Rescue)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color medium"></div>
+                                    <span>🟡 <strong>Medium Priority:</strong> Essential needs (Shelter, Tools, Infrastructure)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color low"></div>
+                                    <span>🟢 <strong>Low Priority:</strong> General aid and information requests</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="categories-container" id="categories-container"></div>
+                        
+                        <!-- Threshold Explanation -->
+                        <div class="threshold-explanation">
+                            <h4>📊 Confidence Threshold Guide:</h4>
+                            <p><strong>Lower (0.1-0.4):</strong> More categories detected, less certain<br>
+                            <strong>Medium (0.5-0.7):</strong> Balanced detection and accuracy<br>
+                            <strong>Higher (0.8-0.9):</strong> Fewer categories, more certain</p>
+                        </div>
+                        
+                        <div class="confidence-chart" id="confidence-chart"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analytics Page -->
+        <section id="analytics" class="page-section">
+            <div class="container">
+                <h2 class="section-title">Analytics Dashboard</h2>
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <div class="card-header">
+                            <h3>Classification History</h3>
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <div class="analytics-content">
+                            <div class="metric">
+                                <span class="metric-value" id="total-classifications">0</span>
+                                <span class="metric-label">Total Classifications</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-value" id="avg-confidence">0%</span>
+                                <span class="metric-label">Average Confidence</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="analytics-card">
+                        <div class="card-header">
+                            <h3>Recent Activity</h3>
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="analytics-content">
+                            <div id="recent-activity" class="activity-list">
+                                <p class="no-data">No classifications yet. Start classifying messages to see analytics!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Page -->
+        <section id="about" class="page-section">
+            <div class="container">
+                <div class="about-content">
+                    <div class="about-text">
+                        <h2 class="section-title">About DisasterAI</h2>
+                        <p class="about-description">
+                            DisasterAI is a revolutionary platform that leverages cutting-edge artificial intelligence 
+                            to transform emergency response operations. Our advanced machine learning models can instantly 
+                            classify and prioritize disaster-related messages, enabling faster and more effective response coordination.
+                        </p>
+                        <div class="about-features">
+                            <div class="about-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Real-time message processing</span>
+                            </div>
+                            <div class="about-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Multi-category classification</span>
+                            </div>
+                            <div class="about-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Priority-based routing</span>
+                            </div>
+                            <div class="about-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Comprehensive analytics</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-visual">
+                        <div class="tech-stack">
+                            <h3>Technology Stack</h3>
+                            <div class="tech-items">
+                                <div class="tech-item">
+                                    <i class="fab fa-python"></i>
+                                    <span>Python</span>
+                                </div>
+                                <div class="tech-item">
+                                    <i class="fas fa-brain"></i>
+                                    <span>Scikit-learn</span>
+                                </div>
+                                <div class="tech-item">
+                                    <i class="fab fa-html5"></i>
+                                    <span>HTML5</span>
+                                </div>
+                                <div class="tech-item">
+                                    <i class="fab fa-js-square"></i>
+                                    <span>JavaScript</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Processing message...</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='demo.js') }}"></script>
+</body>
+</html>
