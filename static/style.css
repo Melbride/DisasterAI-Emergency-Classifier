@@ -90,6 +90,8 @@ body {
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    padding-top: 70px;
+    box-sizing: border-box;
 }
 
 .hero-background {
@@ -274,8 +276,7 @@ body {
 
 /* Main Content Area */
 .main-content {
-    margin-top: 70px;
-    min-height: calc(100vh - 70px);
+    min-height: 100vh;
 }
 
 .page-section {
@@ -292,7 +293,7 @@ body {
 }
 
 #classify, #analytics, #about {
-    padding: 50px 0;
+    padding: 120px 0 50px 0;
 }
 
 .classify-container {
